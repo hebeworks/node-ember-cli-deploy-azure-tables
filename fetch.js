@@ -1,6 +1,6 @@
 'use strict';
 
-const Azure = require('Azure-storage');
+const Azure = require('azure-storage');
 const EmberCliDeployError = require('./errors/ember-cli-deploy-error');
 const Memoize = require('memoizee');
 const Promise = require('bluebird');
