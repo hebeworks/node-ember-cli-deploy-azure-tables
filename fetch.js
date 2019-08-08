@@ -12,9 +12,9 @@ const _defaultOpts = {
   revisionQueryParam: 'index_key',
   memoize: false,
   memoizeOpts: {
-    maxAge:   5000, // ms
+    maxAge: 5000, // ms
     preFetch: true,
-    max:      4,    // a sane default (current pointer, current html and two indexkeys in cache)
+    max: 4,    // a sane default (current pointer, current html and two indexkeys in cache)
   }
 };
 
@@ -61,7 +61,8 @@ const _initialize = (connectionInfo, passedOpts) => {
  * Retrieves the HTML from Azure Table Storage.
  */
 const fetchIndex = (req, appName, connectionInfo, passedOpts) => {
-
+  console.log('fetchIndex');
+  console.log(`passedOpts: ${JSON.stringify(passedOpts)}`)
   if (!initialized) {
     _initialize(connectionInfo, passedOpts);
   }
@@ -112,6 +113,8 @@ const fetchIndex = (req, appName, connectionInfo, passedOpts) => {
       });
     });
   }
+
+  console.log(`opts.azureTableName: ${opts.azureTableName}`);
 
   /**
    *  Retrieve the row key for the active revision and
