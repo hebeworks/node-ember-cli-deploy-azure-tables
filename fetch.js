@@ -95,6 +95,8 @@ const fetchIndex = (req, appName, connectionInfo, passedOpts) => {
 
     return new Promise((resolve, reject) => {
 
+      console.log(`table: ${table}, partitionKey: ${partitionKey}, rowKey: ${rowKey}`);
+
       azureTableService.retrieveEntity(table, partitionKey, rowKey, (error, result, response) => {
 
         if (!result) {
