@@ -67,9 +67,12 @@ const fetchIndex = (req, appName, connectionInfo, passedOpts) => {
     _initialize(connectionInfo, passedOpts);
   }
 
+  const options = _getOpts(passedOpts);
+
+
   let rowKey;
-  if (req.query[opts.revisionQueryParam]) {
-    const queryKey = req.query[opts.revisionQueryParam].replace(/[^A-Za-z0-9]/g, '');
+  if (req.query[options.revisionQueryParam]) {
+    const queryKey = req.query[options.revisionQueryParam].replace(/[^A-Za-z0-9]/g, '');
     rowKey = appName + ':' + queryKey;
   }
 
@@ -80,7 +83,7 @@ const fetchIndex = (req, appName, connectionInfo, passedOpts) => {
     if (rowKey) {
       return Promise.resolve(rowKey);
     } else {
-      return queryAzure(opts.azureTableName, 'manifest', appName + ':current')
+      return queryAzure(options.azureTableName, 'manifest', appName + ':current')
         .then((result) => result)
         .catch((err) => {
           throw err;
@@ -114,14 +117,14 @@ const fetchIndex = (req, appName, connectionInfo, passedOpts) => {
     });
   }
 
-  console.log(`opts.azureTableName: ${opts.azureTableName}`);
+  console.log(`options.azureTableName: ${options.azureTableName}`);
 
   /**
    *  Retrieve the row key for the active revision and
    *  return the active revision's content.
    */
   return retrieveRowKey()
-    .then((rowKey) => queryAzure(opts.azureTableName, 'manifest', rowKey))
+    .then((rowKey) => queryAzure(options.azureTableName, 'manifest', rowKey))
     .then((html) => html);
 };
 
