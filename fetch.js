@@ -61,14 +61,11 @@ const _initialize = (connectionInfo, passedOpts) => {
  * Retrieves the HTML from Azure Table Storage.
  */
 const fetchIndex = (req, appName, connectionInfo, passedOpts) => {
-  console.log('fetchIndex');
-  console.log(`passedOpts: ${JSON.stringify(passedOpts)}`)
   if (!initialized) {
     _initialize(connectionInfo, passedOpts);
   }
 
   const options = _getOpts(passedOpts);
-
 
   let rowKey;
   if (req.query[options.revisionQueryParam]) {
@@ -98,11 +95,7 @@ const fetchIndex = (req, appName, connectionInfo, passedOpts) => {
   function queryAzure(table, partitionKey, rowKey) {
 
     return new Promise((resolve, reject) => {
-
-      console.log(`table: ${table}, partitionKey: ${partitionKey}, rowKey: ${rowKey}`);
-
       azureTableService.retrieveEntity(table, partitionKey, rowKey, (error, result, response) => {
-
         if (!result) {
           reject(new EmberCliDeployError("There's no " + rowKey + ' revision.', true));
         } else if (error) {
@@ -116,8 +109,6 @@ const fetchIndex = (req, appName, connectionInfo, passedOpts) => {
       });
     });
   }
-
-  console.log(`options.azureTableName: ${options.azureTableName}`);
 
   /**
    *  Retrieve the row key for the active revision and
