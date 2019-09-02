@@ -60,7 +60,7 @@ const _initialize = (connectionInfo, passedOpts) => {
 /**
  * Retrieves the HTML from Azure Table Storage.
  */
-const fetchIndex = (req, appName, connectionInfo, passedOpts) => {
+const fetchIndex = (req, appName, connectionInfo, passedOpts, logger) => {
   if (!initialized) {
     _initialize(connectionInfo, passedOpts);
   }
@@ -115,7 +115,12 @@ const fetchIndex = (req, appName, connectionInfo, passedOpts) => {
    *  return the active revision's content.
    */
   return retrieveRowKey()
-    .then((rowKey) => queryAzure(options.azureTableName, 'manifest', rowKey))
+    .then((rowKey) => {
+      if (logger && logger.info) {
+        logger.info(`azureTableName: ${options.azureTableName}, rowKey: ${rowKey}`);
+      }
+      return queryAzure(options.azureTableName, 'manifest', rowKey)
+    })
     .then((html) => html);
 };
 
